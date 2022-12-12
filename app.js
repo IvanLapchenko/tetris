@@ -22,10 +22,23 @@ document.addEventListener("DOMContentLoaded", () => {
     const grid = document.querySelector("#grid");
     const scoreDisplay = document.querySelector("#score");
     const startBtn = document.querySelector("#start-button");
+    const addSpeed = document.querySelector("#speed-add");
+    const lowerSpeed = document.querySelector("#speed-lower");
+    const speed = document.querySelector("#speed");
+    const audio = new Audio("music.mp3");
+    const displaySquares = document.querySelectorAll("#mini-grid div");
+    const displayWidth = 4;
+    const displayIndex = 0;
     const width = 10;
+    let interval = 1000;
+    let speedCount = 3;
     let nextRandom = 0;
     let timerId;
     let score = 0;
+    let currentPosition = 4;
+    let currentRotation = 0;
+    let gameOver = false;
+        
     const colors = [
         "orange",
         "red",
@@ -69,13 +82,17 @@ document.addEventListener("DOMContentLoaded", () => {
         [width, width + 1, width + 2, width + 3]
     ]
 
-    const theTetrominoes = [lTetromino, zTetromino, tTetromino, oTetromino, iTetromino]
+    const theTetrominoes = [lTetromino, zTetromino, tTetromino, oTetromino, iTetromino];
+    let random = Math.floor(Math.random() * theTetrominoes.length);
+    let current = theTetrominoes[random][currentRotation];
 
-    let currentPosition = 4;
-    let currentRotation = 0;
-
-    let random = Math.floor(Math.random() * theTetrominoes.length)
-    let current = theTetrominoes[random][currentRotation]
+    const upNextTetrominoes = [
+        [1, displayWidth + 1, displayWidth * 2 + 1, 2],
+        [0, displayWidth, displayWidth + 1, displayWidth * 2 + 1],
+        [1, displayWidth, displayWidth + 1, displayWidth + 2],
+        [0, 1, displayWidth, displayWidth + 1],
+        [1, displayWidth + 1, displayWidth * 2 + 1, displayWidth * 3 + 1]
+    ]
 
     function draw() {
         current.forEach(index => {
@@ -91,8 +108,6 @@ document.addEventListener("DOMContentLoaded", () => {
         })
     };
 
-    timerId = setInterval(moveDown, 500);
-
     function control(e) {
         if (e.keyCode === 37) {
             moveLeft();
@@ -107,6 +122,7 @@ document.addEventListener("DOMContentLoaded", () => {
             moveDown()
         }
     };
+
     document.addEventListener("keyup", control);
 
     function moveDown() {
@@ -165,18 +181,6 @@ document.addEventListener("DOMContentLoaded", () => {
             draw();
     };
 
-    const displaySquares = document.querySelectorAll("#mini-grid div");
-    const displayWidth = 4;
-    const displayIndex = 0;
-
-    const upNextTetrominoes = [
-        [1, displayWidth + 1, displayWidth * 2 + 1, 2],
-        [0, displayWidth, displayWidth + 1, displayWidth * 2 + 1],
-        [1, displayWidth, displayWidth + 1, displayWidth + 2],
-        [0, 1, displayWidth, displayWidth + 1],
-        [1, displayWidth + 1, displayWidth * 2 + 1, displayWidth * 3 + 1]
-    ]
-
     function displayShape() {
         displaySquares.forEach(square => {
             square.classList.remove("tetromino");
@@ -192,11 +196,34 @@ document.addEventListener("DOMContentLoaded", () => {
         if (timerId) {
             clearInterval(timerId);
             timerId = null;
+            audio.pause();
         }
         else {
             draw();
             timerId = setInterval(moveDown, 1000);
             displayShape();
+            audio.play();
+        }
+    })
+
+    speed.innerHTML = speedCount;
+    addSpeed.addEventListener("click", () => {
+        if (interval > 500) {
+            clearInterval(timerId);
+            interval -= 250;
+            timerId = setInterval(moveDown, interval);
+            speedCount += 1;
+            speed.innerHTML = speedCount;
+        }
+    })
+
+    lowerSpeed.addEventListener("click", () => {
+        if (interval < 1500) {
+            clearInterval(timerId);
+            interval += 250;
+            timerId = setInterval(moveDown, interval);
+            speedCount -= 1;
+            speed.innerHTML = speedCount;
         }
     })
 
@@ -223,7 +250,10 @@ document.addEventListener("DOMContentLoaded", () => {
         if (current.some(index => squares[currentPosition + index].classList.contains("taken"))) {
             scoreDisplay.innerHTML = "Game over";
             clearInterval(timerId);
+            audio.currentTime = 0;
+            gameOver = true;
         }
     }
+
 })
 

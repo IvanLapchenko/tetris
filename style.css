@@ -1,19 +1,49 @@
+* {
+    box-sizing: border-box;
+}
+
+html {
+    background: linear-gradient(#e66465, #9198e5);
+    height: 100%;
+}
+
+body {
+    font-family: "Montserrat", sans-serif;
+    font-size: 1.6rem;
+    margin: auto;
+    max-width: 60rem;
+    color: #d8edea;
+}
+
+h1 {
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+#game {
+    display: flex;
+}
 #container {
     display: flex;
     justify-content: center;
 }
 
 #grid {
-    width: 200px;
-    height: 400px;
-    background-color: yellow;
+    width: 400px;
+    height: 800px;
     display: flex;
     flex-wrap: wrap;
+    margin-top: 15px;
+    margin-left: 30px;
+    outline: 1px solid white;
+    border: none;
+/*    border-radius: 10px;*/
 }
 
 #grid div {
-    width: 20px;
-    height: 20px;
+    width: 40px;
+    height: 40px;
 }
 
 .tetromino {
@@ -21,15 +51,108 @@
 }
 
 #mini-grid {
-    margin-left: 50px;
-    width: 80px;
-    height: 80px;
-    background-color: yellow;
+    width: 160px;
+    height: 160px;
     display: flex;
     flex-wrap: wrap;
+    margin-top: 15px;
+    margin-left: 30px;
+    outline: 1px solid white;
+    border: none;
+/*    border-radius: 10px;*/
 }
 
 #mini-grid div {
-    width: 20px;
-    height: 20px;
+    width: 40px;
+    height: 40px;
+}
+
+#rules {
+/*    border-radius: 20px;*/
+    padding-block-end: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    text-align: center;
+    margin-top: 1rem;
+    width: 17.5rem;
+    height: 25rem;
+    background: linear-gradient(217deg, rgba(255,0,0,.8), rgba(255,0,0,0) 70.71%), 
+                linear-gradient(127deg, rgba(0,255,0,.8), rgba(0,255,0,0) 70.71%), 
+                linear-gradient(336deg, rgba(0,0,255,.8), rgba(0,0,255,0) 70.71%);
+}
+
+button {
+    background-color: #f44336;
+    border: 1px solid #222222;
+/*    border-radius: 10px;*/
+    box-sizing: border-box;
+    color: white;
+    cursor: pointer;
+    display: inline-block;
+    font-family: Circular,-apple-system,BlinkMacSystemFont,Roboto,"Helvetica Neue",sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 20px;
+    padding: 13px 23px;
+    position: relative;
+    touch-action: manipulation;
+    transition: box-shadow .2s,-ms-transform .1s,-webkit-transform .1s,transform .1s;
+}
+
+button:focus-visible {
+    box-shadow: #222222 0 0 0 2px, rgba(255, 255, 255, 0.8) 0 0 0 4px;
+    transition: box-shadow .2s;
+    }
+
+button:active {
+    background-color: #F7F7F7;
+    border-color: #000000;
+    transform: scale(.96);
+    }
+
+button:disabled {
+    border-color: #DDDDDD;
+    color: #DDDDDD;
+    cursor: not-allowed;
+    opacity: 1;
+    }
+
+p {
+    font-size: 16px;
+    padding: 30px;
+    text-align: justify;
+    text-justify: inter-word;
+}
+
+a:link, a:visited {
+    border: 1px solid #222222;
+    background-color: #f44336;
+    color: white;
+    padding: 14px 25px;
+    text-align: center;
+    display: inline-block;
+/*    border-radius: 20px;*/
+    text-decoration: none;
+    padding: 13px 23px;
+    line-height: 20px;
+}
+
+#speed-control {
+    display: flex;
+    flex-direction: column;
+    margin-left: 30px;
+    width: 80px;
+}
+
+#speed-control * {
+    padding: 8px;
+    margin-top: 20px;
+    text-align: center;
+}
+
+#speed-control span {
+    border: solid 1px white;
+/*    border-radius: 10px;*/
 }

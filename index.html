@@ -7,11 +7,31 @@
     <title>Document</title>
 </head>
 <body>
-    <h3>Score: <span id="score">0</span></h3>
-    <button id="start-button">Start/Pause</button>
-    <div id="container">
-        <div id="grid"></div>
-        <div id="mini-grid"></div>
-    </div>
+    <h1>The Tetris</h1>
+    <audio id="music">
+        <source src="music.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+    <section id="game">
+        <div id="rules">
+            <h3>Score: <span id="score">0</span></h3>
+            <a href="https://youtu.be/rAUn1Lom6dw">Tutorial</a>
+            <p> You can only move the pieces in specific ways; your game is over if your pieces reach the top of the screen; and you can only remove pieces from the screen by filling all the blank space in a line.</p>
+            <button id="start-button">Start/Pause</button>
+        </div>
+
+        <div id="container">
+            <div id="grid"></div>
+            <div id="sidebar">
+                <div id="mini-grid"></div>
+                <div id="speed-control">
+                    <button id="speed-add">Faster</button>
+                    <span id="speed"></span>
+                    <button id="speed-lower">Slower</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
 </body>
 </html>
