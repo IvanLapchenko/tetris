@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let score = 0;
     let currentPosition = 4;
     let currentRotation = 0;
-    let gameOver = false;
+    let isgameOver = false;
         
     const colors = [
         "orange",
@@ -193,6 +193,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     startBtn.addEventListener("click", () => {
+        if (isgameOver) {
+            document.location.reload();
+        };
         if (timerId) {
             clearInterval(timerId);
             timerId = null;
@@ -208,22 +211,34 @@ document.addEventListener("DOMContentLoaded", () => {
 
     speed.innerHTML = speedCount;
     addSpeed.addEventListener("click", () => {
-        if (interval > 500) {
+        if (interval > 300) {
             clearInterval(timerId);
-            interval -= 250;
+            interval -= 350;
             timerId = setInterval(moveDown, interval);
+            speedCount += 1;
+            speed.innerHTML = speedCount;
+        }
+        else {
+            interval -= 350;
             speedCount += 1;
             speed.innerHTML = speedCount;
         }
     })
 
     lowerSpeed.addEventListener("click", () => {
-        if (interval < 1500) {
-            clearInterval(timerId);
-            interval += 250;
-            timerId = setInterval(moveDown, interval);
-            speedCount -= 1;
-            speed.innerHTML = speedCount;
+        if (interval < 1700) {
+            if (timerId) {
+                clearInterval(timerId);
+                interval += 350;
+                timerId = setInterval(moveDown, interval);
+                speedCount -= 1;
+                speed.innerHTML = speedCount;
+            }
+            else {
+                interval += 350;
+                speedCount -= 1;
+                speed.innerHTML = speedCount;
+            }
         }
     })
 
@@ -251,7 +266,7 @@ document.addEventListener("DOMContentLoaded", () => {
             scoreDisplay.innerHTML = "Game over";
             clearInterval(timerId);
             audio.currentTime = 0;
-            gameOver = true;
+            isgameOver = true;
         }
     }
 
