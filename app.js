@@ -38,6 +38,8 @@ document.addEventListener("DOMContentLoaded", () => {
     let currentPosition = 4;
     let currentRotation = 0;
     let isgameOver = false;
+
+    audio.loop = true;
         
     const colors = [
         "orange",

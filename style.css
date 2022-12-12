@@ -3,8 +3,7 @@
 }
 
 html {
-    background: linear-gradient(#e66465, #9198e5);
-    height: 100%;
+    min-height: 100%;
 }
 
 body {
@@ -13,6 +12,7 @@ body {
     margin: auto;
     max-width: 60rem;
     color: #d8edea;
+    background: linear-gradient(#e66465, #9198e5) fixed;
 }
 
 h1 {
