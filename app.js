@@ -97,32 +97,39 @@ document.addEventListener("DOMContentLoaded", () => {
     ]
 
     function draw() {
-        current.forEach(index => {
+        if (!isgameOver) {
+            current.forEach(index => {
             squares[currentPosition + index].classList.add("tetromino");
             squares[currentPosition + index].style.backgroundColor = colors[random];
         });
+        }
     };
 
     function undraw() {
-        current.forEach(index => {
+        if (!isgameOver) {
+            current.forEach(index => {
             squares[currentPosition + index].classList.remove("tetromino");
             squares[currentPosition + index].style.backgroundColor = "";
-        })
+        });
+        }
     };
 
     function control(e) {
-        if (e.keyCode === 37) {
-            moveLeft();
-        }
-        else if (e.keyCode === 38) {
-            rotate()
-        }
-        else if (e.keyCode === 39) {
-            moveRight()
-        }
-        else if (e.keyCode === 40) {
-            moveDown()
-        }
+        if (!isgameOver) {
+            if (e.keyCode === 37) {
+                moveLeft();
+            }
+            else if (e.keyCode === 38) {
+                rotate()
+            }
+            else if (e.keyCode === 39) {
+                moveRight()
+            }
+            else if (e.keyCode === 40) {
+                moveDown()
+            };
+        };
+
     };
 
     document.addEventListener("keyup", control);
@@ -136,6 +143,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function freeze() {
         if (current.some(index => squares[currentPosition + index + width].classList.contains("taken"))) {
+            console.log(current.some(index => squares[currentPosition + index + width]))
             current.forEach(index => squares[currentPosition + index].classList.add("taken"));
             random = nextRandom;
             nextRandom = Math.floor(Math.random() * theTetrominoes.length);
@@ -172,15 +180,41 @@ document.addEventListener("DOMContentLoaded", () => {
         draw()
     };
 
-    function rotate() {
-            undraw();
-            currentRotation++;
+    function isAtRight() {
+        return current.some(index => (currentPosition + index + 1) % width === 0)
+    }
 
-            if (currentRotation === current.length) {
-                currentRotation = 0;
-            };
-            current = theTetrominoes[random][currentRotation];
-            draw();
+    function isAtLeft() {
+        return current.some(index => (currentPosition + index) % width === 0)
+    }
+
+    function checkRotatedPosition(P) {
+        P = P || currentPosition;
+
+        if ((P + 1) % width < 4) {
+            if (isAtRight()) {
+                currentPosition += 1
+                checkRotatedPosition(P)
+            }
+        }
+        else if (P % width > 5) {
+            if (isAtLeft()) {
+                currentPosition -= 1
+                checkRotatedPosition(P)
+                }
+            }
+    }
+
+    function rotate() {
+        undraw();
+        currentRotation++;
+
+        if (currentRotation === current.length) {
+            currentRotation = 0;
+        };
+        current = theTetrominoes[random][currentRotation];
+        checkRotatedPosition();
+        draw();
     };
 
     function displayShape() {
@@ -214,17 +248,20 @@ document.addEventListener("DOMContentLoaded", () => {
     speed.innerHTML = speedCount;
     addSpeed.addEventListener("click", () => {
         if (interval > 300) {
-            clearInterval(timerId);
-            interval -= 350;
-            timerId = setInterval(moveDown, interval);
-            speedCount += 1;
-            speed.innerHTML = speedCount;
+            if (timerId) {
+                clearInterval(timerId);
+                interval -= 350;
+                timerId = setInterval(moveDown, interval);
+                speedCount += 1;
+                speed.innerHTML = speedCount;
+            }
+            else {
+                interval -= 350;
+                speedCount += 1;
+                speed.innerHTML = speedCount;
+            }
         }
-        else {
-            interval -= 350;
-            speedCount += 1;
-            speed.innerHTML = speedCount;
-        }
+        
     })
 
     lowerSpeed.addEventListener("click", () => {
@@ -236,7 +273,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 speedCount -= 1;
                 speed.innerHTML = speedCount;
             }
-            else {
+            else{
                 interval += 350;
                 speedCount -= 1;
                 speed.innerHTML = speedCount;
